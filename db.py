@@ -62,3 +62,16 @@ def jobs_all():
         """
     ).fetchall()
     return [dict(row) for row in rows]
+
+def jobs_create(title, company, location, description, salary):
+    conn = connect_to_db()
+    row = conn.execute(
+        """
+        INSERT INTO jobs (title, company, location, description, salary)
+        VALUES (?, ?, ?, ?, ?)
+        RETURNING *
+        """,
+        (title, company, location, description, salary),
+    ).fetchone()
+    conn.commit()
+    return dict(row)
