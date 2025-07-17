@@ -15,11 +15,16 @@ def index():
 
 @app.route("/jobs.json", methods=["POST"])
 def create():
-    title = request.args.get("title")
-    company = request.args.get("company")
-    location = request.args.get("location")
-    description = request.args.get("description")
-    salary = request.args.get("salary")
+    if request.is_json:
+        data = request.json
+    else:
+        data = request.form
+    
+    title = data.get("title")
+    company = data.get("company")
+    location = data.get("location")
+    description = data.get("description")
+    salary = data.get("salary")
     return db.jobs_create(title, company, location, description, salary)
 
 @app.route("/jobs/<id>.json")
