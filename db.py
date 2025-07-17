@@ -84,4 +84,5 @@ def jobs_find_by_id(id):
         WHERE id = ?
         """,
         (id,),
-    )
+    ).fetchone()
+    return dict(row)
