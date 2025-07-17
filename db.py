@@ -99,3 +99,15 @@ def jobs_update_by_id(id, title, company, location, description, salary):
     ).fetchone()
     conn.commit()
     return dict(row)
+
+def jobs_destroy_by_id(id):
+    conn = connect_to_db()
+    row = conn.execute(
+        """
+        DELETE from jobs
+        WHERE id = ?
+        """,
+        (id,),
+    )
+    conn.commit()
+    return {"message": "Job destroyed successfully"}

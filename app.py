@@ -40,3 +40,7 @@ def update(id):
     description = request.args.get("description", current_job["description"])
     salary = request.args.get("salary", current_job["salary"])
     return db.jobs_update_by_id(id, title, company, location, description, salary)
+
+@app.route("/jobs/<id>.json", methods=["DELETE"])
+def destroy(id):
+    return db.jobs_destroy_by_id(id)
