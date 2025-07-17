@@ -3,7 +3,7 @@ import db
 from flask_cors import CORS
 
 app = Flask(__name__)
-cors = CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
+cors = CORS(app, resources={r"/*": {"origins": "http://localhost:5173", "supports_credentials": True}})
 
 @app.route('/')
 def hello():
