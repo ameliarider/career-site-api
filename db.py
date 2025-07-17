@@ -75,3 +75,13 @@ def jobs_create(title, company, location, description, salary):
     ).fetchone()
     conn.commit()
     return dict(row)
+
+def jobs_find_by_id(id):
+    conn = connect_to_db()
+    row = conn.execute(
+        """
+        SELECT * FROM jobs
+        WHERE id = ?
+        """,
+        (id,),
+    )

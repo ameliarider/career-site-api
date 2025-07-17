@@ -3,6 +3,7 @@ import db
 from flask_cors import CORS
 
 app = Flask(__name__)
+cors = CORS(app, resources={r"/api/*": {"origins": "http://localhost:5173"}})
 
 @app.route('/')
 def hello():
@@ -14,9 +15,9 @@ def index():
 
 @app.route("/jobs.json", methods=["POST"])
 def create():
-    title = request.form.get("title")
-    company = request.form.get("company")
-    location = request.form.get("location")
-    description = request.form.get("description")
-    salary = request.form.get("salary")
+    title = request.args.get("title")
+    company = request.args.get("company")
+    location = request.args.get("location")
+    description = request.args.get("description")
+    salary = request.args.get("salary")
     return db.jobs_create(title, company, location, description, salary)
