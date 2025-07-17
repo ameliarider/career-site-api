@@ -86,3 +86,16 @@ def jobs_find_by_id(id):
         (id,),
     ).fetchone()
     return dict(row)
+
+def jobs_update_by_id(id, title, company, location, description, salary):
+    conn = connect_to_db()
+    row = conn.execute(
+        """
+        UPDATE jobs SET title = ?, company = ?, location = ?, description = ?, salary = ?
+        WHERE id = ?
+        RETURNING *
+        """,
+        (title, company, location, description, salary, id),
+    ).fetchone()
+    conn.commit()
+    return dict(row)
