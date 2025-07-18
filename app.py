@@ -39,11 +39,11 @@ def update(id):
         data = request.form
     current_job = db.jobs_find_by_id(id)
 
-    title = request.args.get("title", current_job["title"])
-    company = request.args.get("company", current_job["company"])
-    location = request.args.get("location", current_job["location"])
-    description = request.args.get("description", current_job["description"])
-    salary = request.args.get("salary", current_job["salary"])
+    title = data.get("title", current_job["title"])
+    company = data.get("company", current_job["company"])
+    location = data.get("location", current_job["location"])
+    description = data.get("description", current_job["description"])
+    salary = data.get("salary", current_job["salary"])
     return db.jobs_update_by_id(id, title, company, location, description, salary)
 
 @app.route("/jobs/<id>.json", methods=["DELETE"])
