@@ -12,7 +12,7 @@ bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 @bp.route('/signup', methods=['POST'])
 def register():
-    data = request.get_json() or request.form
+    data = request.get_json(force=True) or request.form
     username = data.get('username')
     password = data.get('password')
     
@@ -25,6 +25,7 @@ def register():
     error = None
 
     if error is None:
+        
         try:
             db_conn.execute(
                 "INSERT INTO users (username, password) VALUES (?, ?)",
