@@ -1,9 +1,13 @@
 from flask import Flask, request
 import db
 from flask_cors import CORS
+import auth
 
 app = Flask(__name__)
+app.secret_key = 'your-secret-key-here'  # Required for sessions
 cors = CORS(app, resources={r"/*": {"origins": "http://localhost:5173", "supports_credentials": True}})
+
+app.register_blueprint(auth.bp)
 
 @app.route('/')
 def hello():
@@ -49,3 +53,4 @@ def update(id):
 @app.route("/jobs/<id>.json", methods=["DELETE"])
 def destroy(id):
     return db.jobs_destroy_by_id(id)
+

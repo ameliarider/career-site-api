@@ -24,6 +24,20 @@ def initial_setup():
         );
         """
     )
+    conn.execute(
+        """
+        DROP TABLE IF EXISTS users;
+        """
+    )
+    conn.execute(
+        """
+        CREATE TABLE users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT UNIQUE NOT NULL,
+        password TEXT NOT NULL
+        );
+        """
+    )
     conn.commit()
     print("Table created successfully")
 
@@ -61,6 +75,7 @@ def jobs_all():
         SELECT * FROM jobs
         """
     ).fetchall()
+    conn.close()
     return [dict(row) for row in rows]
 
 def jobs_create(title, company, location, description, salary):
@@ -74,6 +89,7 @@ def jobs_create(title, company, location, description, salary):
         (title, company, location, description, salary),
     ).fetchone()
     conn.commit()
+    conn.close()
     return dict(row)
 
 def jobs_find_by_id(id):
@@ -85,6 +101,7 @@ def jobs_find_by_id(id):
         """,
         (id,),
     ).fetchone()
+    conn.close()
     return dict(row)
 
 def jobs_update_by_id(id, title, company, location, description, salary):
@@ -98,6 +115,7 @@ def jobs_update_by_id(id, title, company, location, description, salary):
         (title, company, location, description, salary, id),
     ).fetchone()
     conn.commit()
+    conn.close()
     return dict(row)
 
 def jobs_destroy_by_id(id):
@@ -110,4 +128,22 @@ def jobs_destroy_by_id(id):
         (id,),
     )
     conn.commit()
+    conn.close()
     return {"message": "Job destroyed successfully"}
+
+def get_db():
+    return connect_to_db()
+
+def users_create(username, password):
+    conn = connect_to_db()
+    row = conn.execute(
+        """
+        INSERT INTO users (username, password)
+        VALUES (?, ?)
+        RETURNING *
+        """,
+        (username, password),
+    ).fetchone()
+    conn.commit()
+    conn.close()
+    return dict(row)
